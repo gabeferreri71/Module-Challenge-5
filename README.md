@@ -53,3 +53,58 @@ For the total portfolio, total_portfolio variable is created and is the sum of t
 
 ### Evaluate the Emergency Fund
 
+1. First, we want to make a list of the total crypto wallet and the total stocks/bonds. To do this, we used:
+
+savings_data = {
+    "Portfolio Wallets": [total_crypto_wallet, total_stocks_bonds]
+} 
+
+savings_data
+
+2. We now want to take the list info and make it into a dataframe with wallet ticker labels in $USD format:
+
+wallet_tickers = ["Crypto Value ($USD)", "Stock/Bonds Value ($USD)"]
+savings_df = pd.DataFrame(savings_data, index = wallet_tickers) 
+
+round(savings_df,2) 
+
+3. With the savings_df dataframe created, we now want to make a pie chart with parameters 'y = 'Portfolio Wallets'' and 'title = 'Portfolio Composition'' using plot.pie(), resulting in the accompanying pie chart.
+
+4. Lastly, we create an emergency_fund_value varaible equal to monthly_income * 3. We now create three if statements (combos of if, elif, and else) to determine if the total_portfolio is >, == (verify), or < the emergency_fund_value as shown below:
+
+if total_portfolio > emergency_fund_value:
+    print("Congrats! You have enough money in this fund.")
+elif total_portfolio == emergency_fund_value:
+    print("Congrats on reaching this financial goal! You're portfolio matches your emergency fund!")
+else: 
+    print(f"Your emergency fund goal can be reached with ${(emergency_fund_value - total_portfolio):0.2f} more dollars")
+
+## Part II: Create a Financial Planner For Retirement 
+### Create the Monte Carlo Simulation 
+
+1. We're analyzing a 3-year period in this part. Similar to before, we will use the pd.Timestamp() for start and end dates, with varibles being start_date_years and end_date_years. unlike before in start_date_years, the date will be set to 2019-01-27 being three years from the date we're using. We also create a limit_rows variable set to the max of 1000. 
+
+Once the pd.Timestamp() functions are run, we create a dataframe prices_years_df using the .get_barset() function with alpaca. Similar to the single day, we have interior parameters of tickers, timeframe, start = start_date_years, end = end_date_years, and limit = limit_rows. .df is added outside the function. We then use the .head() and .tail() to see the resulting dataframe. Note the dataframe output order, because it will be important in the next step (the output has SPY on the right and AGG on the left)
+
+2. We now will create variable MC_years for the simulation. Using MCSimulation we get:
+
+MC_years = MCSimulation(
+  portfolio_data = prices_years_df,
+  weights = [.40,.60],
+  num_simulation = 500,
+  num_trading_days = 252*30
+)
+
+Where portfolio_data is assigned to prices_years_df, we weight 0.4 for AGG and 0.6 for SPY (note order from before), we run 500 simulations as given, and for 30 years, num_trading_days is equal to 252 * 30 for each day.
+
+We then review the simulation input data by using MC_years.portfolio_data.head().
+
+For cumulative returns over 30 years, we will input MC_years.calc_cumulative_return() where you'll get returned "Running Monte Carlo simulation number " for 500 samples. A table with rows = num_trading_days and 500 columns will be produced. 
+
+We now want to plot this simulation assigned in a variable simulation_plot. This can be done using MC_years.plot_simulation(). 
+
+3. For probability distribution, we will create distribution_plot and assign it to MC_years.plot_distribution(), and get a resulting bar graph of results.
+
+4. To generate the summary statistics of the simulation, we create variable weight_table and assign it to MC_years.summarize_cumulative_return(), followed by a print statement of weight_table
+
+
