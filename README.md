@@ -1,5 +1,26 @@
 # Module-Challenge-5: Financial Planning with APIs and Simulations
 
+We start with seven imports plus matplotlib as shown:
+
+import os
+
+import requests
+
+import json
+
+import pandas as pd
+
+from dotenv import load_dotenv
+
+import alpaca_trade_api as tradeapi
+
+from MCForecastTools import MCSimulation
+
+
+%matplotlib inline
+
+To make sure our call to the .env will be ok, we run load_dotenv() and look for a "true" output.
+
 ## Part I: Create a Financial Planner for Emergencies
 ### Evaluate the Cryptocurrency Wallet by Using the Requests Library
 
@@ -31,7 +52,7 @@ alpaca = tradeapi.REST(
 
 Where we use the main and secret keys along with the version "v2." Note that tradeapi is from our imports and .REST creates the object with the mentioned parameters.
 
-3. Next, we want to make a dataframe of the shares ticker and shares number. First, we created a list named shares_data for the spy_shares and agg_shares. We create a tickers variable for both SPY and AGG next. We now create a small dataframe, portfolio_df, assigned to pd.DataFrame(shares_data, index = tickers) followed by print(portfolio_df) to check the output. We next set our timeframe to "1D," and created our start_date and end_date variables. We are using the same day in this case (I used 01-27-22 from when I worked on the module) and utilize the Timestamp function from Pandas with the parameters of the date and the timezone "tz" as shown:
+3. Next, we want to make a dataframe of the shares ticker and shares number. First, we created a list named shares_data for the spy_shares and agg_shares. We create a tickers variable for both SPY and AGG next. We now create a small dataframe, portfolio_df, assigned to pd.DataFrame(shares_data, index = tickers) followed by print(portfolio_df) to check the output. We next set our timeframe to "1D," and created our start_date and end_date variables. We are using the same day in this case (I used 01-27-22 from when I worked on the module) and utilize the Timestamp and isoformat functions from Pandas with the parameters of the date and the timezone "tz" as shown:
 
 start_date = pd.Timestamp("2022-01-27", tz = "America/New_York").isoformat() 
 end_date = pd.Timestamp("2022-01-27", tz = "America/New_York").isoformat() 
@@ -103,7 +124,7 @@ For cumulative returns over 30 years, we will input MC_years.calc_cumulative_ret
 
 We now want to plot this simulation assigned in a variable simulation_plot. This can be done using MC_years.plot_simulation(). 
 
-3. For probability distribution, we will create distribution_plot and assign it to MC_years.plot_distribution(), and get a resulting bar graph of results.
+3. For probability distribution, we will create distribution_plot and assign it to MC_years.plot_distribution(), and get a resulting histogram graph of results.
 
 4. To generate the summary statistics of the simulation, we create variable weight_table and assign it to MC_years.summarize_cumulative_return(), followed by a print statement of weight_table.
 
