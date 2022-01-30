@@ -145,5 +145,20 @@ MC_ten.portfolio_data.head()
 MC_ten.calc_cumulative_return() is then ran for the cumulative return over the projected 10 years, followed by creating a line plot with ten_simulation = MC_ten.plot_simulation() and a histogram with ten_distribution = MC_ten.plot_distribution(). Finally, to summarize the returns, we create and run the block:
 
 ten_table = MC_ten.summarize_cumulative_return()
+
 print(ten_table)
 
+### Retirement Question
+
+We first print total_stocks_bonds to see the current value in $USD. We then create upper and lower CI variables like before to multiply the CI position in ten_table by total_stocks_bonds. Like before, I also included round() functions to get it in $0.00 format. This is followed by a print statement, as fully seen below:
+
+ci_lower_ten_cumulative_return = round(ten_table[8]*total_stocks_bonds,2)
+ci_upper_ten_cumulative_return = round(ten_table[9]*total_stocks_bonds,2)
+
+
+print(f"There is a 95% chance that an initial portfolio of ${total_stocks_bonds}"
+      f" with 20% bond weight and 80% stock weight will, after 10 years, end in the range of"
+      f" ${ci_lower_ten_cumulative_return} and ${ci_upper_ten_cumulative_return}.") 
+      
+*For answer portion, please refer to the notebook. 
+      
