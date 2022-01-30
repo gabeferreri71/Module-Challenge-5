@@ -105,6 +105,45 @@ We now want to plot this simulation assigned in a variable simulation_plot. This
 
 3. For probability distribution, we will create distribution_plot and assign it to MC_years.plot_distribution(), and get a resulting bar graph of results.
 
-4. To generate the summary statistics of the simulation, we create variable weight_table and assign it to MC_years.summarize_cumulative_return(), followed by a print statement of weight_table
+4. To generate the summary statistics of the simulation, we create variable weight_table and assign it to MC_years.summarize_cumulative_return(), followed by a print statement of weight_table.
 
+### Analyze the Retirement Portfolio Forecasts
+
+We first print total_stocks_bonds to confirm the portfolio value. For the confidence intervals, we create a "lower" and "upper" variables assigned to weight_table[ci bound position] * total_stocks_bonds. To get this in a $USD format, I also used the round function as shown:
+
+ci_lower_thirty_cumulative_return = round(weight_table[8]*total_stocks_bonds,2)
+
+ci_upper_thirty_cumulative_return = round(weight_table[9]*total_stocks_bonds,2)
+
+To print the results in a concise format, we did the following:
+
+print(f"There is a 95% chance that an initial portfolio of ${total_stocks_bonds}"
+      f" with 40% bond weight and 60% stock weight will, after 30 years, end in the range of"
+      f" ${ci_lower_thirty_cumulative_return} to ${ci_upper_thirty_cumulative_return}.") 
+
+*Note: a good way to check if your weights are messed up is to run the simulation once, flip the weights, then run it again. Based on economic principles, the 60% stock / 40% bond should have notably greater return at the upper CI over time as opposed to vice-versa. 
+
+### Forecast Cumulative Returns in 10 Years
+
+We will follow many of the same steps as above for this section. 
+
+We're still using the 3-year timestamp data, so we create variable prices_years_ten and set it to prices_years_df, followed by .head() to make sure it's the same. This is followed by making MC_ten, which is assigned to the MCSimulation() function with portfolio_data = prices_years_ten, weights = [0.2, 0.8], and num_trading_days = 252 * 10 for 10 years. This is then reviewed using the .head() function, with the code block as follows:
+
+prices_years_ten = prices_years_df
+
+prices_years_ten.head()
+
+MC_ten = MCSimulation(
+  portfolio_data = prices_years_ten,
+  weights = [.20,.80],
+  num_simulation = 500,
+  num_trading_days = 252*10
+)
+
+MC_ten.portfolio_data.head()
+
+MC_ten.calc_cumulative_return() is then ran for the cumulative return over the projected 10 years, followed by creating a line plot with ten_simulation = MC_ten.plot_simulation() and a histogram with ten_distribution = MC_ten.plot_distribution(). Finally, to summarize the returns, we create and run the block:
+
+ten_table = MC_ten.summarize_cumulative_return()
+print(ten_table)
 
